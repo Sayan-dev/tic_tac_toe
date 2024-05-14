@@ -178,7 +178,10 @@ ol {
   padding: 0;
 }
 
-#game-board button {
+#game-board .game-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 8rem;
   height: 8rem;
   border: none;
