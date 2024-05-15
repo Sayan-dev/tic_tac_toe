@@ -1,32 +1,51 @@
-import React from 'react'
+import React, { useState } from "react";
 
-const board=[
-    [9747, 1054, 9747],
-    [9747, 1054, 1054],
-    [1054, 9747, 9747]
-]
+const board = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+];
 
 export const Gameboard = () => {
-  return (
-    <ol id='game-board'>
-        {board.map((row)=>{
-            return (
-                <li>
-                    <ol>
-                        {row.map((col)=>
-                            {
+    const [turns, setTurns] = useState(board);
+
+    const handleOnClick = (row_index, col_index) => {
+        // Get previous turns as previousState
+        setTurns((previousState) => {
+            const newTurns = [...previousState.map((row) => [...row])];
+            newTurns[row_index][col_index] = 9747;
+
+            return newTurns;
+        });
+    };
+
+    return (
+        <ol id="game-board">
+            {turns.map((row, row_index) => {
+                return (
+                    <li>
+                        <ol>
+                            {row.map((col, col_index) => {
                                 return (
                                     <li>
-                                        <div className='game-cell'>{String.fromCodePoint(col)}</div>
+                                        <div
+                                            onClick={() =>
+                                                handleOnClick(
+                                                    row_index,
+                                                    col_index
+                                                )
+                                            }
+                                            className="game-cell"
+                                        >
+                                            {String.fromCodePoint(col)}
+                                        </div>
                                     </li>
-                                )
-                            }
-                        )}
-                    </ol>
-                </li>
-            )
-        }
-        )}
-    </ol>
-  )
-}
+                                );
+                            })}
+                        </ol>
+                    </li>
+                );
+            })}
+        </ol>
+    );
+};
