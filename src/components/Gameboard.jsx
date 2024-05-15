@@ -6,17 +6,18 @@ const board = [
     [null, null, null],
 ];
 
-export const Gameboard = () => {
+export const Gameboard = ({ handleSelectSquare, activePlayer }) => {
     const [turns, setTurns] = useState(board);
 
     const handleOnClick = (row_index, col_index) => {
         // Get previous turns as previousState
         setTurns((previousState) => {
             const newTurns = [...previousState.map((row) => [...row])];
-            newTurns[row_index][col_index] = 9747;
+            newTurns[row_index][col_index] = activePlayer;
 
             return newTurns;
         });
+        handleSelectSquare();
     };
 
     return (
@@ -37,7 +38,7 @@ export const Gameboard = () => {
                                             }
                                             className="game-cell"
                                         >
-                                            {String.fromCodePoint(col)}
+                                            {col}
                                         </div>
                                     </li>
                                 );
