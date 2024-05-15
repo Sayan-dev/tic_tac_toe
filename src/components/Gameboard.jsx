@@ -7,12 +7,14 @@ const board=[
 [null, null, null]
 ]
 
-export const Gameboard = () => {
+export const Gameboard = ({currentPlayer ,handleCurrentPlayer}) => {
+
     const [turns, setTurns] = useState(board)
     const handleOnClick=(x_index, y_index)=>{
+        handleCurrentPlayer()
         setTurns((prevState)=>{
             const newTurns = [...prevState.map(row=> [...row])]
-            newTurns[x_index][y_index]= '*';
+            newTurns[x_index][y_index]= (currentPlayer=== 0 ? 'x' : 'o');
             return newTurns;
         })
     }

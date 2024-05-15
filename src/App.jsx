@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { Gameboard } from './components/Gameboard.jsx';
 import Player from './components/Player.jsx';
 
 function App() {
+  const [currentPlayer, setCurrentPlayer]=useState(0);
+  const handleCurrentPlayer=()=>{
+    setCurrentPlayer(currentPlayer === 0 ? 1: 0)
+  }
   return (
     <main>
       <div id="game-container">
@@ -9,7 +14,7 @@ function App() {
           <Player initialName="Player 1" symbol="X" />
           <Player initialName="Player 2" symbol="O" />
         </ol>
-        <Gameboard/>
+        <Gameboard handleCurrentPlayer={handleCurrentPlayer} currentPlayer={currentPlayer}/>
       </div>
       LOG
     </main>
