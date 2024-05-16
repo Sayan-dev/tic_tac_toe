@@ -38,7 +38,7 @@ export const Gameboard = ({ handleSelectSquare, activePlayer }) => {
                                             }
                                             className="game-cell"
                                         >
-                                            {col}
+                                            {String.fromCharCode(col)}
                                         </div>
                                     </li>
                                 );
