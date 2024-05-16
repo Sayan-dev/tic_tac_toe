@@ -14,7 +14,9 @@ export const Gameboard = ({currentPlayer ,handleCurrentPlayer}) => {
         handleCurrentPlayer()
         setTurns((prevState)=>{
             const newTurns = [...prevState.map(row=> [...row])]
-            newTurns[x_index][y_index]= (currentPlayer=== 0 ? 'x' : 'o');
+            if(!newTurns[x_index][y_index]){
+                newTurns[x_index][y_index]= (currentPlayer=== 0 ? String.fromCodePoint(1054) : String.fromCodePoint(9747));
+            }
             return newTurns;
         })
     }
