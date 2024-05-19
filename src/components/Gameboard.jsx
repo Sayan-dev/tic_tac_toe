@@ -1,45 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-const board=[
-//     [9747, 1054, 9747]
-[null, null, null],
-[null, null, null],
-[null, null, null]
-]
+// [{boardInfo: {row: row_id, column: column_id}, playerInfo: 1 },{boardInfo: {row: row_id, column: column_id}, playerInfo: 0 }]
 
-export const Gameboard = ({currentPlayer ,handleCurrentPlayer}) => {
-
-    const [turns, setTurns] = useState(board)
-    const handleOnClick=(x_index, y_index)=>{
-        handleCurrentPlayer()
-        setTurns((prevState)=>{
-            const newTurns = [...prevState.map(row=> [...row])]
-            if(!newTurns[x_index][y_index]){
-                newTurns[x_index][y_index]= (currentPlayer=== 0 ? String.fromCodePoint(9747) : String.fromCodePoint(1054));
-            }
-            return newTurns;
-        })
-    }
-  return (
-    <ol id='game-board'>
-        {turns.map((row, row_index)=>{
-            return (
-                <li>
-                    <ol>
-                        {row.map((col, col_index)=>
-                            {
+export const Gameboard = ({ handleOnClick, gameBoard }) => {
+    return (
+        <ol id="game-board">
+            {gameBoard.map((row, row_index) => {
+                return (
+                    <li>
+                        <ol>
+                            {row.map((col, col_index) => {
                                 return (
                                     <li>
-                                        <div className='game-cell' onClick={()=>handleOnClick(row_index, col_index)}>{col}</div>
+                                        <div
+                                            className="game-cell"
+                                            onClick={() =>
+                                                handleOnClick(
+                                                    row_index,
+                                                    col_index
+                                                )
+                                            }
+                                        >
+                                            {col}
+                                        </div>
                                     </li>
-                                )
-                            }
-                        )}
-                    </ol>
-                </li>
-            )
-        }
-        )}
-    </ol>
-  )
-}
+                                );
+                            })}
+                        </ol>
+                    </li>
+                );
+            })}
+        </ol>
+    );
+};
