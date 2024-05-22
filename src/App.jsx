@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { Gameboard } from './components/Gameboard.jsx';
 import Player from './components/Player.jsx';
-import { WINNING_COMBINATIONS } from './win/win_combination.js';
+import { WINNING_COMBINATIONS } from './constants/win_combination.js';
+import { GameOver } from './components/GameOver.jsx';
+import { BOARD, INITIAL_PLAYER_INFO } from './constants/game.js';
 
-const board=[
-  //     [9747, 1054, 9747]
-  [null, null, null],
-  [null, null, null],
-  [null, null, null]
-  ]
-
-  //const getBoard(turns){
- //
- // }
 function App() {
+  const [playerDetails, setPlayerDetails] = useState(INITIAL_PLAYER_INFO);
   const [currentPlayer, setCurrentPlayer]=useState(0);
-  const [turns, setTurns] = useState([])
-  const gameBoard=[...board]
+  const [turns, setTurns] = useState([]);
+
+  let showMessage='Game Draw!';
+  const handlePlayerEdition=(playerIndex, playerName)=>{
+    setPlayerDetails(prevPlayerDetails=>{
+      const tempPlayerDetails=[...prevPlayerDetails];
+      tempPlayerDetails[playerIndex].name=playerName;
+      return tempPlayerDetails;
+    })
+  }
+  const gameBoard=[...BOARD.map((arr)=>[...arr])]
     const handleOnClick=(x_index, y_index)=>{
       if(gameBoard[x_index][y_index])
         return;
@@ -39,7 +41,7 @@ function App() {
       gameBoard[turn.indexInfo.row][turn.indexInfo.col]=(turn.playerInfo === 0 ? String.fromCodePoint(9747) : String.fromCodePoint(1054))
     })
     let isWinner = false;
-
+    let draw = false;
     function getWinner()
     {
       if(turns.length < 5) return;
@@ -57,7 +59,12 @@ function App() {
         }
         if(wining){
           isWinner=true;
+          showMessage=`${playerDetails[turns[turns.length-1].playerInfo].name} won`;
           break;
+        }
+        else{
+          if(turns.length === 9)
+          draw=true;
         }
       }
     }
@@ -65,25 +72,32 @@ function App() {
     if(isWinner){
       console.log("You won!")
     }
-    //   WINNING_COMBINATIONS.map(combo=>{
-    //     combo.map(
-    //       (item=> {
-    //         gameBoard[item.row][item.column] === validSymbol
-    //       })
-    //     )
-    //   })
-    // }
-  
+    
+    const onRestart=()=>{
+      setTurns([]);
+    }
   return (
     <main>
       <div id="game-container">
         <ol id="players" className='highlight-player'>
-          <Player initialName="Player 1" symbol="X" currentPlayer={currentPlayer}/>
-          <Player initialName="Player 2" symbol="O" currentPlayer={currentPlayer} />
+          {playerDetails.map(
+            (item,index)=> (
+              <Player 
+              key={index}
+              id ={index}
+              initialName={item.name} 
+              symbol={item.symbol} 
+              currentPlayer={currentPlayer} 
+              onEdit={handlePlayerEdition}/>
+            )
+          )}
         </ol>
         <Gameboard handleOnClick={handleOnClick} gameBoard={gameBoard}/>
+        {(isWinner|| draw) && <GameOver 
+          message={showMessage} 
+          restart={onRestart}/>}
       </div>
-      LOG
+      
     </main>
   );
 }
